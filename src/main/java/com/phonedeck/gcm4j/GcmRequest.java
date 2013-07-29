@@ -73,6 +73,14 @@ public class GcmRequest {
         setCollapseKey(collapseKey);
         return this;
     }
+    
+    public GcmRequest withDataItem(String key, String value) {
+        if (data == null) {
+            data = new HashMap<>();
+        }
+        data.put(key, value);
+        return this;
+    }
 
     public GcmRequest withData(Map<String, String> data) {
         setData(data);
