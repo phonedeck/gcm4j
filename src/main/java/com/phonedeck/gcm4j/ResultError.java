@@ -50,6 +50,14 @@ public enum ResultError {
     MESSAGE_TOO_BIG("MessageTooBig"),
     
     /**
+     * The payload data contains a key (such as from or any value prefixed by google.) that is used
+     * internally by GCM in the com.google.android.c2dm.intent.RECEIVE Intent and cannot be used.
+     * Note that some words (such as collapse_key) are also used by GCM but are allowed in the
+     * payload, in which case the payload value will be overridden by the GCM value. 
+     */
+    INVALID_DATA_KEY("InvalidDataKey"),
+    
+    /**
      * The value for the Time to Live field must be an integer representing a duration in seconds between 0
      * and 2,419,200 (4 weeks).
      */
@@ -68,6 +76,12 @@ public enum ResultError {
      * GCM servers were busy and could not process the message for this particular recipient.
      */
     UNAVAILABLE("Unavailable"),
+    
+    /**
+     * A message was addressed to a registration ID whose package name did not match the value
+     * passed in the request.
+     */
+    INVALID_PACKAGE_NAME("InvalidPackageName"),
     
     /**
      * The returned error code was unknown when this version of the client was released. Please check if
