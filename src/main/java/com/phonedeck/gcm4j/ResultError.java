@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 public enum ResultError {
+    
     /**
      * Check that the request contains a registration ID (either in the registration_id parameter in 
      * a plain text message, or in the registration_ids field in JSON). 

@@ -9,6 +9,7 @@ import com.google.common.base.Objects;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GcmResponse {
+    
     @JsonProperty("multicast_id")
     private long multicastId;
     

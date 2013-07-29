@@ -15,9 +15,9 @@ public interface FilterChain {
     ListenableFuture<GcmResponse> next(GcmRequest request);
     
     /**
-     * GcmClient that sends the request.
-     * @return GcmClient that sends the request
+     * {@link Gcm} that sends the request.
+     * @return {@link Gcm} that sends the request
      */
-    Gcm getClient();
+    Gcm getGcm();
     
 }

@@ -48,12 +48,27 @@ public class DefaultGcm implements Gcm {
         this.filters = gcmConfig.getFilters() != null ? ImmutableList.copyOf(gcmConfig.getFilters()) : ImmutableList.<GcmFilter>of();
     }
     
-
-    
     @Override
     public ListenableFuture<GcmResponse> send(GcmRequest request) {
         return new Chain().next(request);
     }
+            
+    private static URL getConfigEndpoint(URL configEndpoint) {
+        try {
+            return configEndpoint != null ? configEndpoint : new URL("https://android.googleapis.com/gcm/send");
+        } catch (MalformedURLException ex) {
+            // should never happen
+            throw new RuntimeException(ex);
+        }
+    }
+    
+    private static ObjectMapper createObjectMapper() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.setSerializationInclusion(Include.NON_DEFAULT);
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        return objectMapper;
+    }
+    
     
     
     public ObjectMapper getObjectMapper() {
@@ -74,31 +89,11 @@ public class DefaultGcm implements Gcm {
     
     public ListeningExecutorService getExecutor() {
         return executor;
-    }
-    
-    private static URL getConfigEndpoint(URL configEndpoint) {
-        try {
-            return configEndpoint != null ? configEndpoint : new URL("https://android.googleapis.com/gcm/send");
-        } catch (MalformedURLException ex) {
-            // should never happen
-            throw new RuntimeException(ex);
-        }
-    }
-    
-    private static ObjectMapper createObjectMapper() {
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setSerializationInclusion(Include.NON_DEFAULT);
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-        return objectMapper;
-    }
+    }    
     
     
     
-    private GcmResponse resultSync(GcmRequest request) throws IOException {
-
-                
-        //final Map<String, Object> eventLog = new LinkedHashMap<String, Object>();
-
+    private GcmResponse executeRequest(GcmRequest request) throws IOException {
         byte[] content = objectMapper.writeValueAsBytes(request);
 
         HttpURLConnection conn = connectionFactory.open(gcmUrl);
@@ -123,15 +118,8 @@ public class DefaultGcm implements Gcm {
                 throw new GcmNetworkException(conn.getResponseCode(), str.trim(), ex);
             }
         }
-        
-        
+                
         response.setRequest(request);
-
-        //REQUESTS.update(System.nanoTime() - startTime, TimeUnit.NANOSECONDS);
-
-        LOG.info("GCM: {}", response);
-
-        //eventLog.put("multicastId", response.multicastId);
 
         Iterator<String> i1 = request.getRegistrationIds().iterator();
         Iterator<Result> i2 = response.getResults().iterator();
@@ -149,16 +137,14 @@ public class DefaultGcm implements Gcm {
         return response;
     }
     
-    
-    
- 
-    private ListenableFuture<GcmResponse> resultAsync(final GcmRequest request) {
+
+    private ListenableFuture<GcmResponse> executeRequestAsync(final GcmRequest request) {
         final SettableFuture<GcmResponse> result = SettableFuture.create();                
         executor.submit(new Runnable() {
             @Override
             public void run() {                
                 try {
-                    result.set(resultSync(request));
+                    result.set(executeRequest(request));
                 } catch (Exception ex) {
                     result.setException(ex);
                 }
@@ -180,12 +166,12 @@ public class DefaultGcm implements Gcm {
             if (i.hasNext()) {
                 return i.next().filter(request, this);            
             } else {
-                return resultAsync(request);
+                return executeRequestAsync(request);
             }
         }
         
         @Override
-        public Gcm getClient() {
+        public Gcm getGcm() {
             return DefaultGcm.this;
         }
 
