@@ -120,3 +120,33 @@ for (Result result : response.getResults()) {
   }
 }
 ```
+
+### Filters
+
+Every request is run through a chain of filters. Each filter may modify the request, pass down the request to the next filter, get back and possibly modify the response, and pass the response up to the previous one.
+
+The order the filters were added matters. The first added filter gets the request first and the response last. Therefore the request of the last filter is passed directly to the GCM Servers and the user gets the response of the last filter.
+
+Simple logging filter example:
+```java
+public final class LoggingFilter implements GcmFilter {
+  public ListenableFuture<GcmResponse> filter(GcmRequest request, FilterChain chain) {
+    System.out.println("Got request: " + request);
+
+    ListenableFuture<GcmResponse> response = chain.next(request);
+    Futures.addCallback(response, new FutureCallback<GcmResponse>() {
+      public void onSuccess(GcmResponse result) {
+        System.out.println("Got response: " + result);
+      }                        
+      public void onFailure(Throwable t) {
+        System.err.println("Exception occured: " + t);
+      }
+    });
+    
+    return response;
+  }
+}
+
+GcmConfig config = new GcmConfig()
+  .withFilter(new LoggingFilter());
+```
