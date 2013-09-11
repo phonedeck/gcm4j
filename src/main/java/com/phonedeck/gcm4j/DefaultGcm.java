@@ -25,6 +25,8 @@ import com.google.common.util.concurrent.SettableFuture;
 
 public class DefaultGcm implements Gcm {
 
+    private static final String AUTH_KEY = "key=";
+
     private static final Logger LOG = LoggerFactory.getLogger(DefaultGcm.class);
 
     private final ObjectMapper objectMapper;
@@ -42,10 +44,15 @@ public class DefaultGcm implements Gcm {
     public DefaultGcm(GcmConfig gcmConfig) {
         this.objectMapper = createObjectMapper();
         this.gcmUrl = getConfigEndpoint(gcmConfig.getEndpoint());
-        this.authorizationValue = "key=" + gcmConfig.getKey();
+        this.authorizationValue = buildAuthString(gcmConfig.getKey());
         this.connectionFactory = gcmConfig.getConnectionFactory() != null ? gcmConfig.getConnectionFactory() : new DefaultConnectionFactory();
         this.executor = gcmConfig.getExecutor() != null ? gcmConfig.getExecutor() : MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
         this.filters = gcmConfig.getFilters() != null ? ImmutableList.copyOf(gcmConfig.getFilters()) : ImmutableList.<GcmFilter>of();
+    }
+    
+    private static String buildAuthString(String authToken)
+    {
+        return AUTH_KEY + authToken;
     }
     
     @Override
@@ -91,14 +98,26 @@ public class DefaultGcm implements Gcm {
         return executor;
     }    
     
-    
+    private String getAuthorization(GcmRequest request) {
+        String authToken = request.getAuthorizationToken();
+        if (authToken == null) {
+            if (authorizationValue == null) {
+                throw new RuntimeException("Gcm client authorisation token can only be null when requests provide their own"
+                        + " token");
+            }
+            return authorizationValue;
+        }
+        else {
+            return buildAuthString(authToken);
+        }
+    }
     
     private GcmResponse executeRequest(GcmRequest request) throws IOException {
         byte[] content = objectMapper.writeValueAsBytes(request);
 
         HttpURLConnection conn = connectionFactory.open(gcmUrl);
         conn.setRequestMethod("POST");
-        conn.addRequestProperty("Authorization", authorizationValue);
+        conn.addRequestProperty("Authorization", getAuthorization(request));
         conn.addRequestProperty("Content-Type", "application/json");
         conn.setDoOutput(true);
         conn.setFixedLengthStreamingMode(content.length);
