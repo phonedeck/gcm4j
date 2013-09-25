@@ -201,7 +201,10 @@ public class DefaultGcm implements Gcm {
             public void run() {                
                 try {
                     result.set(executeRequest(request));
-                } catch (Exception ex) {
+                } catch (GcmException ex) {
+                    result.setException(ex);
+                }
+                  catch (Exception ex) {
                     result.setException(new GcmException("An error occurred when submitting the messsage", ex));
                 }
             }
