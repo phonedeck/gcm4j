@@ -8,6 +8,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 
 import org.apache.commons.io.IOUtils;
@@ -29,7 +30,7 @@ public class DefaultGcm implements Gcm {
 
     private static final Logger LOG = LoggerFactory.getLogger(DefaultGcm.class);
 
-    private final ObjectMapper objectMapper;
+    protected final ObjectMapper objectMapper;
 
     private final URL gcmUrl;
 
@@ -58,6 +59,18 @@ public class DefaultGcm implements Gcm {
     @Override
     public ListenableFuture<GcmResponse> send(GcmRequest request) {
         return new Chain().next(request);
+    }
+    
+    @Override
+    public GcmResponse sendBlocking(GcmRequest request) {
+        try
+        {
+            return executeRequest(request);
+        }
+        catch (Exception ex)
+        {
+            throw new GcmException("An error occurred submitting the message", ex);
+        }
     }
             
     private static URL getConfigEndpoint(URL configEndpoint) {
@@ -112,7 +125,7 @@ public class DefaultGcm implements Gcm {
         }
     }
     
-    private GcmResponse executeRequest(GcmRequest request) throws IOException {
+    protected GcmResponse executeRequest(GcmRequest request) throws IOException {
         byte[] content = objectMapper.writeValueAsBytes(request);
 
         HttpURLConnection conn = connectionFactory.open(gcmUrl);
@@ -131,6 +144,7 @@ public class DefaultGcm implements Gcm {
         try (InputStream is = conn.getInputStream()) {
             rsp = IOUtils.toByteArray(is);
             response = objectMapper.readValue(rsp, GcmResponse.class);
+            
         } catch (IOException ex) {
             try (InputStream es = conn.getErrorStream()) {                
                 String str = es != null ? IOUtils.toString(es) : "No error details provided";
@@ -156,6 +170,29 @@ public class DefaultGcm implements Gcm {
         return response;
     }
     
+    private void checkForRetryInResponse(HttpURLConnection conn) {
+        Map<String, List<String>> headerFields = conn.getHeaderFields();
+        String found = null;
+        for (String key : headerFields.keySet())
+        {
+            if ("Retry-After".equalsIgnoreCase(key))
+            {
+                found = key;
+                break;
+            }
+        }
+        String value = headerFields.get(found).get(0);
+        try
+        {
+            long timeToRetry = Long.decode(value);
+        }
+        catch (NumberFormatException ex)
+        {
+            // TODO here attempt to process as HTTP date, which can be one of 3 formats!
+        }
+        
+    }
+    
 
     private ListenableFuture<GcmResponse> executeRequestAsync(final GcmRequest request) {
         final SettableFuture<GcmResponse> result = SettableFuture.create();                
@@ -165,7 +202,7 @@ public class DefaultGcm implements Gcm {
                 try {
                     result.set(executeRequest(request));
                 } catch (Exception ex) {
-                    result.setException(ex);
+                    result.setException(new GcmException("An error occurred when submitting the messsage", ex));
                 }
             }
         });

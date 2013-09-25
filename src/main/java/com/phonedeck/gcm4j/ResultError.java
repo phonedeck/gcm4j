@@ -131,7 +131,7 @@ public enum ResultError {
         ResultError result = REVERSE_TABLE.get(jsonValue);
         if (result == null) {
             LoggerFactory.getLogger(ResultError.class).warn("Unsupported error code: {}", jsonValue);
-            result = ResultError.UNSUPPORTED_ERROR_CODE;            
+            result = ResultError.UNSUPPORTED_ERROR_CODE;
         }
         return result;
     }
