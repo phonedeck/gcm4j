@@ -1,0 +1,53 @@
+[
+    {
+        "request": {
+            "url": "^/android.googleapis.com/gcm/send",
+            "headers": {
+                "Authorization": "key=AIzaSyB-1uEai2WiUapxCs2Q0GZYzPu7Udno5aA",
+                "Content-Type": "application/json"
+            },
+            "method": "POST",
+            "file": "request_1.json"
+        },
+        "response": {
+            "status": 200,
+            "headers": {
+                "Content-Type": "application/json"
+            },
+            "latency": 100,
+            "file": "response_1.json"
+        }
+    },
+    {
+        "request": {
+            "url": "^/android.googleapis.com/gcm/send",
+            "headers": {
+                "Authorization": "key=AIzaSyB-1uEai2WiUapxCs2Q0GZYzPu7Udno5aA",
+                "Content-Type": "application/json"
+            },
+            "method": "POST",
+            "file": "request_2.json"
+        },
+        "response": {
+            "status": 500,
+            "body": "Internal Server Error",
+            "latency": 100
+        }
+    },
+    {
+        "request": {
+            "url": "^/android.googleapis.com/gcm/send",
+            "headers": {
+                "Authorization": "key=AIzaSyB-1uEai2WiUapxCs2Q0GZYzPu7Udno5aA",
+                "Content-Type": "application/json"
+            },
+            "method": "POST",
+            "file": "request_3.json"
+        },
+        "response": {
+            "status": 503,
+            "body": "Service Unavailable",
+            "latency": 100
+        }
+    }
+]
