@@ -47,6 +47,66 @@
         "response": {
             "status": 503,
             "body": "Service Unavailable",
+            "headers": {
+                "Retry-After": "120"
+            },
+            "latency": 100
+        }
+    },
+    {
+        "request": {
+            "url": "^/android.googleapis.com/gcm/send",
+            "headers": {
+                "Authorization": "key=AIzaSyB-1uEai2WiUapxCs2Q0GZYzPu7Udno5aA",
+                "Content-Type": "application/json"
+            },
+            "method": "POST",
+            "file": "request_4.json"
+        },
+        "response": {
+            "status": 503,
+            "body": "Service Unavailable",
+            "headers": {
+                "Retry-After": "Thu, 26 Sep 2013 22:17:00 GMT"
+            },
+            "latency": 100
+        }
+    },
+    {
+        "request": {
+            "url": "^/android.googleapis.com/gcm/send",
+            "headers": {
+                "Authorization": "key=AIzaSyB-1uEai2WiUapxCs2Q0GZYzPu7Udno5aA",
+                "Content-Type": "application/json"
+            },
+            "method": "POST",
+            "file": "request_5.json"
+        },
+        "response": {
+            "status": 503,
+            "body": "Service Unavailable",
+            "headers": {
+                "Retry-After": "Thursday, 26-Sep-13 22:21:00 GMT"
+            },
+            "latency": 100
+        }
+    },
+    {
+        "request": {
+            "url": "^/android.googleapis.com/gcm/send",
+            "headers": {
+                "Authorization": "key=AIzaSyB-1uEai2WiUapxCs2Q0GZYzPu7Udno5aA",
+                "Content-Type": "application/json"
+            },
+            "method": "POST",
+            "file": "request_6.json"
+        },
+        "response": {
+            "status": 503,
+            "body": "Service Unavailable",
+            "headers": {
+                "Retry-After": "Thursday Sep 26 22:26:00 2013"
+            },
             "latency": 100
         }
     }

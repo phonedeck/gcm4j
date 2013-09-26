@@ -2,12 +2,14 @@ package com.phonedeck.gcm4j;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import org.joda.time.DateTimeUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -72,7 +74,7 @@ public class DefaultGcmIntegration
     }
 
     @Test
-    public void testSendBlockingInternalServerError() throws Exception
+    public void testSendBlocking_InternalServerError() throws Exception
     {
         GcmConfig config = new GcmConfig()
             .withEndpoint(new URL("https://localhost:7443/android.googleapis.com/gcm/send"))
@@ -96,11 +98,12 @@ public class DefaultGcmIntegration
             GcmNetworkException gne = (GcmNetworkException) t;
             assertEquals(HttpURLConnection.HTTP_INTERNAL_ERROR, gne.getCode());
             assertEquals("Internal Server Error", gne.getResponse());
+            assertNull(gne.getRetryAfter());
         }
     }
 
     @Test
-    public void testSendBlockingServiceUnavailable() throws Exception
+    public void testSendBlocking_ServiceUnavailable_RetryAfter_Seconds() throws Exception
     {
         GcmConfig config = new GcmConfig()
             .withEndpoint(new URL("https://localhost:7443/android.googleapis.com/gcm/send"))
@@ -124,6 +127,109 @@ public class DefaultGcmIntegration
             GcmNetworkException gne = (GcmNetworkException) t;
             assertEquals(HttpURLConnection.HTTP_UNAVAILABLE, gne.getCode());
             assertEquals("Service Unavailable", gne.getResponse());
+            assertEquals(Long.valueOf(120000), gne.getRetryAfter());
+        }
+    }
+
+    @Test
+    public void testSendBlocking_ServiceUnavailable_RetryAfter_Rfc822_Date() throws Exception
+    {
+        GcmConfig config = new GcmConfig()
+            .withEndpoint(new URL("https://localhost:7443/android.googleapis.com/gcm/send"))
+            .withKey(AUTH_KEY);
+
+        GcmRequest request = new GcmRequest()
+            .withRegistrationIds(Lists.newArrayList("173"));
+
+        Gcm gcm = new DefaultGcm(config);
+
+        try
+        {
+            DateTimeUtils.setCurrentMillisFixed(1380233760000L);
+            gcm.sendBlocking(request);
+        }
+        catch (GcmException ge)
+        {
+            Throwable t = ge.getCause();
+            assertNotNull(t);
+            assertTrue(t instanceof GcmNetworkException);
+
+            GcmNetworkException gne = (GcmNetworkException) t;
+            assertEquals(HttpURLConnection.HTTP_UNAVAILABLE, gne.getCode());
+            assertEquals("Service Unavailable", gne.getResponse());
+            assertEquals(Long.valueOf(60000), gne.getRetryAfter());
+        }
+        finally
+        {
+            DateTimeUtils.setCurrentMillisSystem();
+        }
+    }
+
+    @Test
+    public void testSendBlocking_ServiceUnavailable_RetryAfter_Rfc850_Date() throws Exception
+    {
+        GcmConfig config = new GcmConfig()
+            .withEndpoint(new URL("https://localhost:7443/android.googleapis.com/gcm/send"))
+            .withKey(AUTH_KEY);
+
+        GcmRequest request = new GcmRequest()
+            .withRegistrationIds(Lists.newArrayList("174"));
+
+        Gcm gcm = new DefaultGcm(config);
+
+        try
+        {
+            DateTimeUtils.setCurrentMillisFixed(1380233760000L);
+            gcm.sendBlocking(request);
+        }
+        catch (GcmException ge)
+        {
+            Throwable t = ge.getCause();
+            assertNotNull(t);
+            assertTrue(t instanceof GcmNetworkException);
+
+            GcmNetworkException gne = (GcmNetworkException) t;
+            assertEquals(HttpURLConnection.HTTP_UNAVAILABLE, gne.getCode());
+            assertEquals("Service Unavailable", gne.getResponse());
+            assertEquals(Long.valueOf(300000), gne.getRetryAfter());
+        }
+        finally
+        {
+            DateTimeUtils.setCurrentMillisSystem();
+        }
+    }
+
+    @Test
+    public void testSendBlocking_ServiceUnavailable_RetryAfter_Ansi_Date() throws Exception
+    {
+        GcmConfig config = new GcmConfig()
+            .withEndpoint(new URL("https://localhost:7443/android.googleapis.com/gcm/send"))
+            .withKey(AUTH_KEY);
+
+        GcmRequest request = new GcmRequest()
+            .withRegistrationIds(Lists.newArrayList("175"));
+
+        Gcm gcm = new DefaultGcm(config);
+
+        try
+        {
+            DateTimeUtils.setCurrentMillisFixed(1380233760000L);
+            gcm.sendBlocking(request);
+        }
+        catch (GcmException ge)
+        {
+            Throwable t = ge.getCause();
+            assertNotNull(t);
+            assertTrue(t instanceof GcmNetworkException);
+
+            GcmNetworkException gne = (GcmNetworkException) t;
+            assertEquals(HttpURLConnection.HTTP_UNAVAILABLE, gne.getCode());
+            assertEquals("Service Unavailable", gne.getResponse());
+            assertEquals(Long.valueOf(600000), gne.getRetryAfter());
+        }
+        finally
+        {
+            DateTimeUtils.setCurrentMillisSystem();
         }
     }
 }

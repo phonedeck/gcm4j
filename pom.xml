@@ -104,7 +104,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- Stubby4j for Tests -->
     <dependency>
       <groupId>by.stub</groupId>
       <artifactId>stubby4j</artifactId>
@@ -112,6 +111,17 @@
       <scope>test</scope>
     </dependency>
 
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>4.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>2.2</version>
+    </dependency>
   </dependencies>
 
 
