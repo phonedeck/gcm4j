@@ -68,9 +68,11 @@ public class DefaultGcm implements Gcm {
 
     @Override
     public GcmResponse sendBlocking(GcmRequest request) {
-        try
-        {
+        try {
             return executeRequest(request);
+        }
+        catch (GcmException ex) {
+            throw ex;
         }
         catch (Exception ex)
         {

@@ -14,9 +14,9 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.google.common.collect.Lists;
-
 import by.stub.client.StubbyClient;
+
+import com.google.common.collect.Lists;
 
 
 /**
@@ -44,7 +44,7 @@ public class DefaultGcmIntegration
         stubbyClient = new StubbyClient();
         File stubby4jConfigFile = new File(DefaultGcmIntegration.class.getResource(
             "/stubby4j/gcm-http-connection-server-stub.json").toURI());
-        stubbyClient.startJetty(stubby4jConfigFile.getPath());
+        stubbyClient.startJetty( stubby4jConfigFile.getPath());
 
         endpointUrl = new URL(ENDPOINT);
     }
@@ -89,13 +89,8 @@ public class DefaultGcmIntegration
         {
             gcm.sendBlocking(request);
         }
-        catch (GcmException ge)
+        catch (GcmNetworkException gne)
         {
-            Throwable t = ge.getCause();
-            assertNotNull(t);
-            assertTrue(t instanceof GcmNetworkException);
-
-            GcmNetworkException gne = (GcmNetworkException) t;
             assertEquals(HttpURLConnection.HTTP_INTERNAL_ERROR, gne.getCode());
             assertEquals("Internal Server Error", gne.getResponse());
             assertNull(gne.getRetryAfter());
@@ -118,13 +113,8 @@ public class DefaultGcmIntegration
         {
             gcm.sendBlocking(request);
         }
-        catch (GcmException ge)
+        catch (GcmNetworkException gne)
         {
-            Throwable t = ge.getCause();
-            assertNotNull(t);
-            assertTrue(t instanceof GcmNetworkException);
-
-            GcmNetworkException gne = (GcmNetworkException) t;
             assertEquals(HttpURLConnection.HTTP_UNAVAILABLE, gne.getCode());
             assertEquals("Service Unavailable", gne.getResponse());
             assertEquals(Long.valueOf(120000), gne.getRetryAfter());
@@ -148,13 +138,8 @@ public class DefaultGcmIntegration
             DateTimeUtils.setCurrentMillisFixed(1380233760000L);
             gcm.sendBlocking(request);
         }
-        catch (GcmException ge)
+        catch (GcmNetworkException gne)
         {
-            Throwable t = ge.getCause();
-            assertNotNull(t);
-            assertTrue(t instanceof GcmNetworkException);
-
-            GcmNetworkException gne = (GcmNetworkException) t;
             assertEquals(HttpURLConnection.HTTP_UNAVAILABLE, gne.getCode());
             assertEquals("Service Unavailable", gne.getResponse());
             assertEquals(Long.valueOf(60000), gne.getRetryAfter());
@@ -182,13 +167,8 @@ public class DefaultGcmIntegration
             DateTimeUtils.setCurrentMillisFixed(1380233760000L);
             gcm.sendBlocking(request);
         }
-        catch (GcmException ge)
+        catch (GcmNetworkException gne)
         {
-            Throwable t = ge.getCause();
-            assertNotNull(t);
-            assertTrue(t instanceof GcmNetworkException);
-
-            GcmNetworkException gne = (GcmNetworkException) t;
             assertEquals(HttpURLConnection.HTTP_UNAVAILABLE, gne.getCode());
             assertEquals("Service Unavailable", gne.getResponse());
             assertEquals(Long.valueOf(300000), gne.getRetryAfter());
@@ -216,13 +196,8 @@ public class DefaultGcmIntegration
             DateTimeUtils.setCurrentMillisFixed(1380233760000L);
             gcm.sendBlocking(request);
         }
-        catch (GcmException ge)
+        catch (GcmNetworkException gne)
         {
-            Throwable t = ge.getCause();
-            assertNotNull(t);
-            assertTrue(t instanceof GcmNetworkException);
-
-            GcmNetworkException gne = (GcmNetworkException) t;
             assertEquals(HttpURLConnection.HTTP_UNAVAILABLE, gne.getCode());
             assertEquals("Service Unavailable", gne.getResponse());
             assertEquals(Long.valueOf(600000), gne.getRetryAfter());

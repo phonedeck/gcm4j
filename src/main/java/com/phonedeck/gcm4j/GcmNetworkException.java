@@ -36,5 +36,22 @@ public class GcmNetworkException extends GcmException {
     public Long getRetryAfter() {
         return retryAfter;
     }
+    
+    /**
+     * Returns whether it would be possible to re-try sending this request at a later date or not.
+     * @return {@code true} if a retry would be viable, otherwise {@code false}.
+     */
+    public boolean canRetry() {
+        switch (code)
+        {
+        case 200:
+            return true;
+        case 400:
+        case 401:
+            return false;
+        default:
+            return true;
+        }
+    }
 
 }
