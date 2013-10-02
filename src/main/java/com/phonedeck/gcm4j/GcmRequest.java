@@ -8,6 +8,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -40,6 +41,7 @@ public class GcmRequest {
     private String restrictedPackageName;
     
     private String authToken;
+    
     private String clientId;
     
     private HashMap<String, Object> attributes;
@@ -137,6 +139,7 @@ public class GcmRequest {
         return this;
     }
     
+    @JsonIgnore
     public String getClientId() {
         return clientId;
     }
@@ -145,6 +148,7 @@ public class GcmRequest {
         this.clientId = clientId;
     }
     
+    @JsonIgnore
     public String getAuthorizationToken()
     {
         return authToken;
