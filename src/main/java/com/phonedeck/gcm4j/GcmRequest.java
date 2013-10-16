@@ -172,6 +172,7 @@ public class GcmRequest {
         }
     }
     
+    @JsonIgnore
     public Object getAttribute(String name) {
         if (attributes == null) {
             return null;
@@ -179,6 +180,7 @@ public class GcmRequest {
         return attributes.get(name);
     }
     
+    @JsonIgnore
     public Map<String, Object> getAttributes() {
         return attributes != null ? Collections.unmodifiableMap(attributes) : Collections.<String, Object>emptyMap();
     }

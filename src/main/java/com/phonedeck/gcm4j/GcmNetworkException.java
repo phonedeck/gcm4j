@@ -13,6 +13,13 @@ public class GcmNetworkException extends GcmException {
     private final String response;
 
     private final Long retryAfter;
+    
+    public GcmNetworkException(String message, Throwable cause) {
+        super(message, cause);
+        this.code = 0;
+        this.retryAfter = null;
+        this.response = null;
+    }
 
     public GcmNetworkException(int code, String response, Throwable cause) {
         this(code, response, null, cause);

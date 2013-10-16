@@ -145,6 +145,10 @@ public class DefaultGcm implements Gcm {
         try (OutputStream os = conn.getOutputStream()) {
             IOUtils.write(content, os);
         }
+        catch (Exception ex)
+        {
+            throw new GcmNetworkException("Error sending HTTP request to GCM", ex);
+        }
 
         GcmResponse response;
         byte[] rsp = null;
