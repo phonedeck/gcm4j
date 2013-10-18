@@ -92,7 +92,6 @@ public class DefaultGcm implements Gcm {
     private static ObjectMapper createObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setSerializationInclusion(Include.NON_DEFAULT);
-        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         return objectMapper;
     }
 
