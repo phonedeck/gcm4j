@@ -1,0 +1,11 @@
+{
+  "data" : {
+    "key" : "value"
+  },
+  "registration_ids" : [ "12345" ],
+  "collapse_key" : "Collapse",
+  "delay_while_idle" : true,
+  "time_to_live" : 360,
+  "restricted_package_name" : "restricted.package.name",
+  "dry_run" : true
+}
