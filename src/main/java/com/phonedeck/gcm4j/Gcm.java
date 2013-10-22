@@ -13,11 +13,5 @@ public interface Gcm {
      * @return future to get the response
      */
     ListenableFuture<GcmResponse> send(GcmRequest request);
-    /**
-     * Send a GCM request and block awaiting the result.
-     * @param request the request to send.
-     * @return the response.
-     */
-    GcmResponse sendBlocking(GcmRequest request);
 
 }

@@ -3,6 +3,7 @@ package com.phonedeck.gcm4j;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
@@ -16,8 +17,10 @@ public class GcmResponse {
     @JsonProperty("results")
     private List<Result> results = new ArrayList<>();
 
+    @JsonIgnore
     private Long retryAfter;
 
+    @JsonIgnore
     private GcmRequest request;
 
     public long getMulticastId() {

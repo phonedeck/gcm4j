@@ -22,10 +22,11 @@ public class GcmRequestTest {
     @Test
     public void testGivenGcmRequestWithApiTokenAndClientIdSetAssertTokenIsNotMarshalledIntoJson() throws Exception {
         GcmRequest request = new GcmRequest();
+
         // set the two fields that should be ignored
-        request.setAuthorizationToken("token");
-        request.setClientId("clientId");
-        
+        request.setKey("token");
+        request.setAttribute("attr", "asdf");
+
         request.setDryRun(true);
         request.setCollapseKey("Collapse");
         request.setDelayWhileIdle(true);
@@ -35,20 +36,20 @@ public class GcmRequestTest {
         Map<String, String> data = new HashMap<>();
         data.put("key", "value");
         request.setData(data);
-        
+
         String expected = loadStringFromFile("test-non-marshalled-fields.json");
-        
+
         ObjectMapper mapper = buildObjectMapper();
         assertEquals(expected, mapper.writeValueAsString(request));
     }
-    
+
     private static ObjectMapper buildObjectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.setSerializationInclusion(Include.NON_DEFAULT);
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
         return objectMapper;
     }
-    
+
     private String loadStringFromFile(String file) {
         InputStream in = getClass().getResourceAsStream(file);
         if (in == null) {
@@ -60,5 +61,5 @@ public class GcmRequestTest {
         scanner.close();
         return result;
     }
-    
+
 }

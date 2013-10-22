@@ -1,6 +1,5 @@
 package com.phonedeck.gcm4j;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,21 +9,18 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class GcmRequest {
-    
-    private static final ObjectMapper mapper = new ObjectMapper();
-    
+
     @JsonProperty("registration_ids")
     private List<String> registrationIds = new ArrayList<String>();
-    
+
     @JsonProperty("notification_key")
     private String notificationKey;
-    
+
     @JsonProperty("notification_key_name")
     private String notificationKeyName;
-    
+
     @JsonProperty("collapse_key")
     private String collapseKey;
 
@@ -36,43 +32,28 @@ public class GcmRequest {
 
     @JsonProperty("time_to_live")
     private long timeToLive;
-    
+
     @JsonProperty("restricted_package_name")
     private String restrictedPackageName;
-    
-    private String authToken;
-    
-    private String clientId;
-    
+
+    @JsonIgnore
+    private String key;
+
+    @JsonIgnore
     private HashMap<String, Object> attributes;
-    
+
     /**
      * Allows developers to test their request without actually sending a message.
      */
     @JsonProperty("dry_run")
     private boolean dryRun;
-    
-    /**
-     * Build a {@link GcmRequest} from a String containing JSON to send to GCM.  If an error occurs then an
-     * IllegalArgumentException is thrown.
-     * @param jsonPayload the payload to process.
-     * @return the constructed request.
-     * @throws IllegalArgumentException if the JSON is not in a valid format for GCM.
-     */
-    public static GcmRequest fromJsonPayload(String jsonPayload) throws IllegalArgumentException {
-        try {
-            return mapper.readValue(jsonPayload, GcmRequest.class);
-        }
-        catch (IOException ex) {
-            throw new IllegalArgumentException("Your json payload is in an incorrect format", ex);
-        }
-    }
-    
+
+
     /*
      * Chaining setters
      */
-    public GcmRequest withAuthorizationToken(String token) {
-        setAuthorizationToken(token);
+    public GcmRequest withKey(String key) {
+        setKey(key);
         return this;
     }
 
@@ -80,12 +61,12 @@ public class GcmRequest {
         getRegistrationIds().add(registrationId);
         return this;
     }
-    
+
     public GcmRequest withRegistrationIds(List<String> registrationIds) {
         setRegistrationIds(registrationIds);
         return this;
     }
-    
+
     public GcmRequest withNotificationKey(String notificationKey) {
         setNotificationKey(notificationKey);
         return this;
@@ -100,7 +81,7 @@ public class GcmRequest {
         setCollapseKey(collapseKey);
         return this;
     }
-    
+
     public GcmRequest withDataItem(String key, String value) {
         if (data == null) {
             data = new HashMap<>();
@@ -118,7 +99,7 @@ public class GcmRequest {
         setDelayWhileIdle(delayWhileIdle);
         return this;
     }
-    
+
     public GcmRequest withTimeToLive(long timeToLive) {
         setTimeToLive(timeToLive);
         return this;
@@ -133,32 +114,16 @@ public class GcmRequest {
         setDryRun(dryRun);
         return this;
     }
-    
-    public GcmRequest withClientId(String clientId) {
-        setClientId(clientId);
-        return this;
-    }
-    
+
     @JsonIgnore
-    public String getClientId() {
-        return clientId;
+    public String getKey() {
+        return key;
     }
-    
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
+
+    public void setKey(String key) {
+        this.key = key;
     }
-    
-    @JsonIgnore
-    public String getAuthorizationToken()
-    {
-        return authToken;
-    }
-    
-    public void setAuthorizationToken(String token)
-    {
-        this.authToken = token;
-    }
-    
+
     public void setAttribute(String name, Object value) {
         if (value == null) {
             if (attributes != null) {
@@ -166,12 +131,12 @@ public class GcmRequest {
             }
         } else {
             if (attributes == null) {
-                attributes = new HashMap<>();                
+                attributes = new HashMap<>();
             }
             attributes.put(name, value);
         }
     }
-    
+
     @JsonIgnore
     public Object getAttribute(String name) {
         if (attributes == null) {
@@ -179,25 +144,25 @@ public class GcmRequest {
         }
         return attributes.get(name);
     }
-    
+
     @JsonIgnore
     public Map<String, Object> getAttributes() {
         return attributes != null ? Collections.unmodifiableMap(attributes) : Collections.<String, Object>emptyMap();
     }
-        
-    
+
+
     /*
      * Getters and Setters
      */
-    
+
     public List<String> getRegistrationIds() {
         return registrationIds;
     }
-        
+
     public void setRegistrationIds(List<String> registrationIds) {
         this.registrationIds = registrationIds;
     }
-    
+
     public String getNotificationKey() {
         return notificationKey;
     }
@@ -254,10 +219,10 @@ public class GcmRequest {
         this.restrictedPackageName = restrictedPackageName;
     }
 
-    
+
     /**
      * Allows developers to test their request without actually sending a message.
-     * 
+     *
      * @return true if the request is a dry run
      */
     public boolean isDryRun() {
@@ -266,12 +231,12 @@ public class GcmRequest {
 
     /**
      * Allows developers to test their request without actually sending a message.
-     * 
+     *
      * @param dryRun true if the request is a dry run
      */
     public void setDryRun(boolean dryRun) {
         this.dryRun = dryRun;
     }
-    
-    
+
+
 }
