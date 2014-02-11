@@ -151,6 +151,18 @@ GcmConfig config = new GcmConfig()
   .withFilter(new LoggingFilter());
 ```
 
+## Version History
+
+### 1.1 - Feb 11, 2014
+
+- Possibility to handle Retry-After values in filters
+- Richer Request and Response interfaces
+
+### 1.0 - Jul 29, 2013
+
+- Initial release
+
+
 ## Contributors
 
 The maintainers would like to express their gratitude towards the contributors, that spared no time to make this library more powerful.
