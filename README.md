@@ -156,3 +156,4 @@ GcmConfig config = new GcmConfig()
 The maintainers would like to express their gratitude towards the contributors, that spared no time to make this library more powerful.
 
 - @turf00 for providing a standard way to respect the server's Retry-After response on errors and a lot of test cases
+- @jalogar for implementing missing auxiliary functions
