@@ -17,6 +17,15 @@ public class GcmResponse {
     @JsonProperty("results")
     private List<Result> results = new ArrayList<>();
 
+    @JsonProperty("failure")
+    private int failure;
+    
+    @JsonProperty("success")
+    private int success;
+    
+    @JsonProperty("canonical_ids")
+    private int canonicalIds;
+    
     @JsonIgnore
     private Long retryAfter;
 
@@ -55,10 +64,37 @@ public class GcmResponse {
         this.retryAfter = retryAfter;
     }
 
-    @Override
+    public int getFailure() {
+		return failure;
+	}
+
+	public void setFailure(int failure) {
+		this.failure = failure;
+	}
+
+	public int getSuccess() {
+		return success;
+	}
+
+	public void setSuccess(int success) {
+		this.success = success;
+	}
+
+	public int getCanonicalIds() {
+		return canonicalIds;
+	}
+
+	public void setCanonicalIds(int canonicalIds) {
+		this.canonicalIds = canonicalIds;
+	}
+
+	@Override
     public String toString() {
         return Objects.toStringHelper(this)
                 .add("multicastId", multicastId)
+                .add("success", success)
+                .add("failure", failure)
+                .add("canonicalIds", canonicalIds)
                 .add("results", results)
                 .toString();
     }

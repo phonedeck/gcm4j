@@ -1,6 +1,7 @@
 package com.phonedeck.gcm4j;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -65,6 +66,11 @@ public class GcmRequest {
     public GcmRequest withRegistrationIds(List<String> registrationIds) {
         setRegistrationIds(registrationIds);
         return this;
+    }
+    
+    public GcmRequest withRegistrationIds(Collection<String> registrationIds) {
+    	getRegistrationIds().addAll(registrationIds);
+    	return this;
     }
 
     public GcmRequest withNotificationKey(String notificationKey) {
