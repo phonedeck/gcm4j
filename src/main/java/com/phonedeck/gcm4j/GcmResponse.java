@@ -87,6 +87,10 @@ public class GcmResponse {
 	public void setCanonicalIds(int canonicalIds) {
 		this.canonicalIds = canonicalIds;
 	}
+	
+	public boolean containsError() {
+		return failure > 0;
+	}
 
 	@Override
     public String toString() {

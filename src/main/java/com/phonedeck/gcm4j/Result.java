@@ -51,7 +51,11 @@ public class Result {
     public String getRequestedRegistrationId() {
         return requestedRegistrationId;
     }
-
+    
+    public boolean isError() {
+		return error != null;
+	}
+    
     @Override
     public String toString() {
         return Objects.toStringHelper(this)
