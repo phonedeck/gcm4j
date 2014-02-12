@@ -153,6 +153,10 @@ GcmConfig config = new GcmConfig()
 
 ## Version History
 
+### 1.2 - Feb 12, 2014
+
+- Simplified response and error handling
+
 ### 1.1 - Feb 11, 2014
 
 - Possibility to handle Retry-After values in filters
