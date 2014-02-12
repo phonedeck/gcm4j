@@ -15,6 +15,11 @@
   <name>GCM4J</name>
   <description>A Java library to use the Google Cloud Messaging service.</description>
   <url>https://github.com/phonedeck/gcm4j</url>
+  
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>  
 
   <licenses>
     <license>
