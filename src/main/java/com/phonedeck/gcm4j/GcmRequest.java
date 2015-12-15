@@ -1,15 +1,9 @@
 package com.phonedeck.gcm4j;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.*;
 
 public class GcmRequest {
 
@@ -28,6 +22,9 @@ public class GcmRequest {
     @JsonProperty("data")
     private Map<String, String> data = new LinkedHashMap<String, String>();
 
+    @JsonProperty("notification")
+    private Map<String, String> notification = new LinkedHashMap<String, String>();
+
     @JsonProperty("delay_while_idle")
     private boolean delayWhileIdle;
 
@@ -36,6 +33,9 @@ public class GcmRequest {
 
     @JsonProperty("restricted_package_name")
     private String restrictedPackageName;
+
+    @JsonProperty("priority")
+    private String priority;
 
     @JsonIgnore
     private String key;
@@ -101,6 +101,11 @@ public class GcmRequest {
         return this;
     }
 
+    public GcmRequest withNotification(Map<String, String> notification) {
+        setNotification(notification);
+        return this;
+    }
+
     public GcmRequest withDelayWhileIdle(boolean delayWhileIdle) {
         setDelayWhileIdle(delayWhileIdle);
         return this;
@@ -108,6 +113,11 @@ public class GcmRequest {
 
     public GcmRequest withTimeToLive(long timeToLive) {
         setTimeToLive(timeToLive);
+        return this;
+    }
+
+    public GcmRequest withPriority(String priority) {
+        setPriority(priority);
         return this;
     }
 
@@ -201,6 +211,10 @@ public class GcmRequest {
         this.data = data;
     }
 
+    public void setNotification(Map<String, String> notification) {
+        this.notification = notification;
+    }
+
     public boolean isDelayWhileIdle() {
         return delayWhileIdle;
     }
@@ -215,6 +229,10 @@ public class GcmRequest {
 
     public void setTimeToLive(long timeToLive) {
         this.timeToLive = timeToLive;
+    }
+
+    public void setPriority(String priority) {
+        this.priority = priority;
     }
 
     public String getRestrictedPackageName() {

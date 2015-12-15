@@ -1,6 +1,9 @@
 package com.phonedeck.gcm4j;
 
-import static org.junit.Assert.assertEquals;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import org.junit.Test;
 
 import java.io.InputStream;
 import java.util.Arrays;
@@ -8,11 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import org.junit.Test;
-
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import static org.junit.Assert.assertEquals;
 
 public class GcmRequestTest {
 
@@ -33,9 +32,14 @@ public class GcmRequestTest {
         request.setRestrictedPackageName("restricted.package.name");
         request.setTimeToLive(360);
         request.setRegistrationIds(Arrays.asList("12345"));
+        request.setPriority("normal");
         Map<String, String> data = new HashMap<>();
         data.put("key", "value");
         request.setData(data);
+
+        Map<String, String> notification = new HashMap<>();
+        notification.put("sound", "default");
+        request.setNotification(notification);
 
         String expected = loadStringFromFile("test-non-marshalled-fields.json");
 
