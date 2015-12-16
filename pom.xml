@@ -11,7 +11,7 @@
   <groupId>com.phonedeck</groupId>
   <artifactId>gcm4j</artifactId>
   <packaging>jar</packaging>
-  <version>1.3-SNAPSHOT</version>
+  <version>1.4-SNAPSHOT</version>
   <name>GCM4J</name>
   <description>A Java library to use the Google Cloud Messaging service.</description>
   <url>https://github.com/phonedeck/gcm4j</url>
