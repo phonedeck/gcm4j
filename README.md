@@ -173,3 +173,4 @@ The maintainers would like to express their gratitude towards the contributors, 
 
 - @turf00 for providing a standard way to respect the server's Retry-After response on errors and a lot of test cases
 - @jalogar for implementing missing auxiliary functions
+- @ivannkf for adding priority and notification fields
