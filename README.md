@@ -153,6 +153,10 @@ GcmConfig config = new GcmConfig()
 
 ## Version History
 
+### 1.3 - Dec 16, 2015
+
+- Supporting priority and notification fields
+
 ### 1.2 - Feb 12, 2014
 
 - Simplified response and error handling
