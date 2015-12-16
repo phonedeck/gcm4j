@@ -12,7 +12,7 @@ The recommended way is to use the library as a Maven dependency.
 <dependency>
   <groupId>com.phonedeck</groupId>
   <artifactId>gcm4j</artifactId>
-  <version>1.0</version>
+  <version>1.3</version>
 </dependency>
 ```
 
