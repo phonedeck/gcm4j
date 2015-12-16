@@ -2,6 +2,10 @@
   "data" : {
     "key" : "value"
   },
+  "notification" : {
+    "sound" : "default"
+  },
+  "priority" : "normal",
   "registration_ids" : [ "12345" ],
   "collapse_key" : "Collapse",
   "delay_while_idle" : true,
