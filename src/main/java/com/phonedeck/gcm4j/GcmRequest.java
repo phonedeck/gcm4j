@@ -7,6 +7,9 @@ import java.util.*;
 
 public class GcmRequest {
 
+    @JsonProperty("to")
+    private String to;
+
     @JsonProperty("registration_ids")
     private List<String> registrationIds = new ArrayList<String>();
 
@@ -55,6 +58,11 @@ public class GcmRequest {
      */
     public GcmRequest withKey(String key) {
         setKey(key);
+        return this;
+    }
+
+    public GcmRequest withTo(String to) {
+        setTo(to);
         return this;
     }
 
@@ -170,6 +178,14 @@ public class GcmRequest {
     /*
      * Getters and Setters
      */
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
+    }
 
     public List<String> getRegistrationIds() {
         return registrationIds;
