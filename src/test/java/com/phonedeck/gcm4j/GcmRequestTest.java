@@ -25,7 +25,7 @@ public class GcmRequestTest {
         // set the two fields that should be ignored
         request.setKey("token");
         request.setAttribute("attr", "asdf");
-
+        request.setTo("54321");
         request.setDryRun(true);
         request.setCollapseKey("Collapse");
         request.setDelayWhileIdle(true);
