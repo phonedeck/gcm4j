@@ -49,6 +49,8 @@ public class GcmRequest {
     @JsonProperty("dry_run")
     private boolean dryRun;
 
+    @JsonProperty("content_available")
+    private boolean contentAvailable;
 
     /*
      * Chaining setters
@@ -128,6 +130,11 @@ public class GcmRequest {
 
     public GcmRequest withDryRun(boolean dryRun) {
         setDryRun(dryRun);
+        return this;
+    }
+
+    public GcmRequest withContentAvailable(boolean contentAvailable) {
+        setContentAvailable(contentAvailable);
         return this;
     }
 
@@ -262,5 +269,11 @@ public class GcmRequest {
         this.dryRun = dryRun;
     }
 
+    public boolean isContentAvailable() {
+        return contentAvailable;
+    }
 
+    public void setContentAvailable(boolean contentAvailable) {
+        this.contentAvailable = contentAvailable;
+    }
 }
